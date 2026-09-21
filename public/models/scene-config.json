@@ -1,0 +1,40 @@
+{
+  "name": "UMBRAL",
+  "units": "meters",
+  "coordinateSystem": "Three.js Y-up; back wall Z=-2.75; camera faces negative Z",
+  "compositionBounds": {"min": [-3.4, 0, -2.9], "max": [3.5, 4.1, 2]},
+  "architecturalEnvelope": {"min": [-13, -0.18, -2.95], "max": [12.4, 8.06, 11.22]},
+  "meshCounts": {"editableBlender": 482, "webGlb": 31},
+  "window": {"center": [-1, 1.985, -2.49], "width": 3, "height": 3.27},
+  "hero": {"position": [2.4, 2.62, 7.3], "target": [-0.2, 1.9, -1.4], "horizontalFovDegrees": 35.64},
+  "heroEnd": {"position": [1.8, 2.52, 6.8], "target": [-0.3, 1.92, -1.6]},
+  "detail": {"position": [1.5, 2.8, 2.2], "target": [-0.7, 2.9, -2.4]},
+  "blind": {
+    "group": "GROUP_Blind",
+    "fabric": "BLIND_Fabric",
+    "rail": "BLIND_BottomRail",
+    "roller": "BLIND_Roller",
+    "material": "MAT_BlackoutWoven",
+    "top": [-1, 3.62, -2.43],
+    "openLength": 0.15,
+    "closedLength": 3.225,
+    "textureRepeatY": "fabric.scale.y; apply after mixer update to map and normalMap"
+  },
+  "animations": [
+    {"name": "Blind_Close", "duration": 6, "start": "open", "end": "closed", "channels": 3},
+    {"name": "Camera_Travel", "duration": 6, "channels": 2}
+  ],
+  "lightsBlender": [
+    {"name": "WindowSoftbox", "type": "area", "position": [-1.2,3.7,-4.5], "target": [-0.6,0.3,1], "powerWatts": 780, "color": [0.72,0.84,1], "size": 3},
+    {"name": "InteriorBounce", "type": "area", "position": [0,3.9,3.2], "target": [0,1,-1], "powerWatts": 180, "color": [0.82,0.86,1], "size": 4},
+    {"name": "WarmFill", "type": "area", "position": [3.1,3.8,0.2], "target": [0.5,0.9,-0.5], "powerWatts": 100, "color": [1,0.66,0.36], "size": 2},
+    {"name": "LampGlow", "type": "point", "position": [2.44,2.02,-1.35], "powerWatts": 45, "color": [1,0.61,0.26], "radius": 0.18},
+    {"name": "AfternoonSun", "type": "directional", "position": [-3,8,-8], "target": [1,0,2], "strength": 2.2, "color": [1,0.83,0.61], "angleDegrees": 6}
+  ],
+  "notes": [
+    "Blender wattage is authoring metadata; recalibrate Three.js lighting and exposure.",
+    "Exclude Landscape_Panorama from room bounds, castShadow and receiveShadow.",
+    "All textures are embedded in GLB. Original source textures are supplied alongside it.",
+    "Alps Field panorama by Andreas Mischok / Poly Haven / CC0: https://polyhaven.com/a/alps_field"
+  ]
+}

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#20221f" />
+    <meta
+      name="description"
+      content="Un estudio de luz y movimiento. Explora una habitación en 3D y controla su persiana enrollable, la cámara y la atmósfera."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Umbral — La luz, a tu ritmo</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#controls">Ir a los controles</a>
+    <header class="header">
+      <a class="brand" href="./" aria-label="Umbral, inicio"
+        ><svg viewBox="0 0 32 36" aria-hidden="true">
+          <path d="M3 2v20c0 16 26 16 26 0V2" />
+          <path d="M10 3h12M10 9h12M10 15h12" /></svg
+        ><span>UMBRAL<small>ESTUDIO DE LUZ</small></span></a
+      >
+      <div class="header-note">
+        <span class="line"></span>Un espacio. Infinitas atmósferas.
+      </div>
+      <a class="text-link" href="#about"
+        >Acerca del estudio <span aria-hidden="true">↗</span></a
+      >
+    </header>
+    <main>
+      <div class="experience">
+        <section class="viewport" aria-label="Habitación 3D interactiva">
+          <img
+            class="scene-poster"
+            src="./poster.jpg"
+            alt="Habitación de tonos carbón con una persiana enrollable, sillón y lámpara cálida"
+          />
+          <div
+            id="scene"
+            tabindex="0"
+            aria-label="Vista 3D. Arrastra o usa dos dedos para explorar. Con teclado: flechas para girar, más y menos para acercar, Inicio para restablecer."
+          ></div>
+          <div class="scene-top">
+            <span class="eyebrow">LA HABITACIÓN / 01</span
+            ><span class="live-badge"><i></i>EN TIEMPO REAL</span>
+          </div>
+          <div class="loading" id="loading" role="status">
+            <span class="loading-mark">U</span>
+            <p>Preparando tu espacio<span id="load-progress">0%</span></p>
+            <div class="load-track"><i id="load-bar"></i></div>
+          </div>
+          <div class="scene-error" id="scene-error" hidden>
+            <p>La vista 3D no pudo abrirse.</p>
+            <span id="error-detail"
+              >Comprueba tu conexión y vuelve a intentarlo.</span
+            ><button type="button" id="retry">Volver a intentar</button>
+          </div>
+          <div class="scene-bottom">
+            <div class="camera-switch" aria-label="Vistas de cámara">
+              <button
+                type="button"
+                data-view="room"
+                class="is-active"
+                aria-pressed="true"
+              >
+                Espacio</button
+              ><button type="button" data-view="detail" aria-pressed="false">
+                Detalle</button
+              ><button type="button" data-view="cinema" aria-pressed="false">
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m7 4 9 6-9 6Z" /></svg
+                >Recorrido
+              </button>
+            </div>
+            <button
+              class="icon-button"
+              id="reset-camera"
+              title="Restablecer cámara"
+              aria-label="Restablecer cámara"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 10a8 8 0 1 1 1 7M4 4v6h6" />
+              </svg>
+            </button>
+          </div>
+          <div class="scene-hint" id="scene-hint">
+            Arrastra para explorar <span>·</span> Acerca para ver la textura
+          </div>
+        </section>
+        <aside
+          class="control-panel"
+          id="controls"
+          aria-label="Controles de la habitación"
+        >
+          <div class="intro">
+            <span class="eyebrow">PERSIANA ENROLLABLE</span>
+            <h1>La luz,<br /><em>a tu ritmo.</em></h1>
+            <p>
+              Un gesto cambia la forma<br class="desktop-break" />
+              de habitar un espacio.
+            </p>
+          </div>
+          <fieldset class="control-group blind-control">
+            <legend>01 <span>Apertura</span></legend>
+            <div class="range-heading">
+              <label for="openness">Deja entrar la luz</label
+              ><output id="openness-value" for="openness" aria-live="off"
+                >70<span>%</span></output
+              >
+            </div>
+            <input
+              id="openness"
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value="70"
+              aria-valuetext="70 por ciento abierta"
+            />
+            <div class="range-labels">
+              <span>Cerrada</span><span>Abierta</span>
+            </div>
+            <button class="primary-button" id="play" disabled>
+              <svg id="play-icon" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m7 4 9 6-9 6Z" /></svg
+              ><span id="play-label">Cerrar persiana</span
+              ><span class="button-time">6 s</span></button
+            ><button type="button" id="reverse" class="reverse-button" disabled>
+              ↕ Invertir dirección
+            </button>
+            <p class="motion-status" id="motion-status" role="status">
+              Tú decides cuánta luz entra.
+            </p>
+          </fieldset>
+          <fieldset class="control-group">
+            <legend>02 <span>Atmósfera</span></legend>
+            <div class="segmented" aria-label="Iluminación">
+              <button data-light="day" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path
+                    d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+                  /></svg
+                >Día</button
+              ><button
+                data-light="golden"
+                class="is-active"
+                type="button"
+                aria-pressed="true"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M3 17h18M5 21h14M7 17a5 5 0 0 1 10 0M12 3v3M3 9l2 2m14 0 2-2"
+                  /></svg
+                >Atardecer</button
+              ><button data-light="night" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"
+                  /></svg
+                >Noche
+              </button>
+            </div>
+          </fieldset>
+          <fieldset class="control-group finish-group">
+            <legend>03 <span>Tejido</span></legend>
+            <div class="finish-row">
+              <div class="swatches" aria-label="Color del tejido">
+                <button
+                  data-fabric="carbon"
+                  class="swatch is-active"
+                  style="--swatch: #383936"
+                  aria-label="Tejido carbón"
+                  aria-pressed="true"
+                ></button
+                ><button
+                  data-fabric="linen"
+                  class="swatch"
+                  style="--swatch: #b8ac94"
+                  aria-label="Tejido lino"
+                  aria-pressed="false"
+                ></button
+                ><button
+                  data-fabric="clay"
+                  class="swatch"
+                  style="--swatch: #876851"
+                  aria-label="Tejido arcilla"
+                  aria-pressed="false"
+                ></button>
+              </div>
+              <span id="fabric-name"
+                >Carbón<small>BLACKOUT · TEJIDO MATE</small></span
+              >
+            </div>
+          </fieldset>
+          <div class="panel-footer">
+            <span class="tiny-window" aria-hidden="true"></span>
+            <p>Diseñado para detenerse.<br />Y sentir el espacio.</p>
+          </div>
+        </aside>
+      </div>
+      <section class="about" id="about">
+        <div>
+          <span class="eyebrow">DEL OBJETO A LA ATMÓSFERA</span>
+          <h2>Menos luz.<br /><em>Más intención.</em></h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            Una persiana, una habitación y la luz que las transforma. Este
+            estudio explora el movimiento de una persiana enrollable en un
+            interior de madera, tela y metal.
+          </p>
+          <p>
+            Abre, cierra, cambia la hora. Acércate a los materiales o deja que
+            la cámara recorra el espacio.
+          </p>
+          <a class="text-link" href="./models/umbral-room.glb" download
+            >Descargar escena 3D <span aria-hidden="true">↓</span></a
+          >
+        </div>
+        <div class="study-note">
+          <span>01 / ESTUDIO DE INTERIOR</span><span>Carbón & roble</span
+          ><span>Blender + Three.js</span>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <span>UMBRAL</span>
+      <p>La belleza de regular la luz.</p>
+      <span>ESTUDIO EXPERIMENTAL · 2026</span>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.DS_Store
+*.blend1
+*.blend2
+.env*
+!.env.example
+.runtime/
+test-results/
+playwright-report/
+blender/renders/
+blender/*.log
+blender/reference/
