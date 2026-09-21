@@ -46,9 +46,11 @@ Cada punto necesita todavía confirmación visual cuando corresponde. La lectura
 - [ ] Medir fluidez durante movimiento en un móvil real; revisar sombras y número de llamadas de dibujo.
 - [ ] Probar reducción de movimiento, cambio de pestaña y escena fuera de pantalla.
 - [ ] Revisar liberación de listeners, texturas y recursos GPU al fallar una carga o reiniciar la vista.
-- [ ] Verificar la compilación publicada en GitHub Pages: rutas de GLB, poster, fuentes y descarga del archivo.
+- [x] Verificar la compilación publicada en GitHub Pages: rutas de GLB, poster, fuentes y descarga del archivo.
 
 El responsable de las pruebas de navegador debe marcar estos puntos únicamente después de ejecutarlos, indicando navegador, tamaño de pantalla y resultado.
 
 
 Revisión ejecutada en el navegador integrado de Codex (Chromium), a 1440 × 1000 y 390 × 844. Carga inicial correcta, extremos 0 % y 100 %, pausa/reanudación en apertura, cambio de sentido, vistas de cámara, colores y atmósferas. El deslizador también respondió a Home y flechas. En móvil, el ancho del documento coincide con el área disponible y los tres botones de atmósfera no desbordan; se verificó visualmente el encuadre completo. La política táctil usa pan-y. No se ha ensayado un teléfono físico ni un lector de pantalla. Los puntos sin marcar son comprobaciones adicionales, no resultados afirmados.
+
+Publicación verificada: página y GLB responden HTTP 200; la escena llegó al estado listo y permitió iniciar/pausar el cierre en https://alexis01001415-oss.github.io/umbral-blender-web/. Sin errores de consola del origen publicado. GitHub Actions completó compilación, pruebas y despliegue correctamente.

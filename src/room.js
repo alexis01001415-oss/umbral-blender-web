@@ -64,7 +64,7 @@ export async function createRoom(container, events = {}) {
     Math.min(window.devicePixelRatio, mobile() ? 1.5 : 1.75),
   );
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.shadowMap.autoUpdate = false;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
