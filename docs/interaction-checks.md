@@ -13,6 +13,7 @@ Comprobaciones sobre el build de producción, con CSP, en el navegador integrado
 - Revisión de código adicional: la finalización asíncrona del visor no debe quitar foco al cotizador; la carga tiene un estado enfocable y los errores una región de alerta.
 - Servidor de prueba aislado devolviendo 503 para el GLB: escribir en el cotizador durante la carga conserva foco y texto al fallar; si se espera el reintento, el error devuelve foco a «Volver a intentar». Los controles 3D quedan deshabilitados y el resto del sitio sigue utilizable. El fallo no se incorpora al build ni al despliegue.
 - Vista horizontal 844×390: hero estático de 600 px en el flujo del documento, sin recorrido pegado ni desbordamiento horizontal.
+- GitHub Pages, después del despliegue: 13 secciones, hero con todos sus archivos cargados, política CSP presente, escena 3D lista y descarga de PDF correcta desde la URL pública. El `robots.txt` raíz permite específicamente la ruta del proyecto y anuncia su sitemap; comprobación SEO final documentada en `qa-report.md`.
 
 `npm test`: 21 pruebas de modelo GLB, escena frontal, archivos WebP, importes, entradas y fechas. `npm audit --omit=dev`: cero vulnerabilidades conocidas en la ejecución registrada. Los resultados automáticos y sus límites figuran en `qa-report.md`.
 
