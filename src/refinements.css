@@ -1,0 +1,343 @@
+/* The requested desktop rhythm, with tighter tracking on smaller screens. */
+:root {
+  --heading-tracking: 1.5px;
+  --body-tracking: 1.5px;
+  --body-leading: 1.4;
+  --heading-leading: 1.2;
+}
+body {
+  letter-spacing: var(--body-tracking);
+  line-height: var(--body-leading);
+}
+body :is(h1, h2, h3, .hero-title) {
+  letter-spacing: var(--heading-tracking);
+  line-height: var(--heading-leading);
+}
+body.umbral-site :is(main, footer, dialog) p,
+body #room-panel p,
+body .materials-copy > p:not(.eyebrow),
+body .closing-section > p:not(.eyebrow) {
+  letter-spacing: var(--body-tracking);
+  line-height: var(--body-leading);
+}
+body .quote-section-label h3,
+body .quote-summary h3 {
+  letter-spacing: var(--heading-tracking);
+  line-height: var(--heading-leading);
+}
+.eyebrow,
+.scene-top,
+.image-tag,
+.photo-caption {
+  letter-spacing: min(1.5px, var(--body-tracking));
+}
+body .hero-title {
+  font-size: clamp(2.5rem, 4.6vw, 4.5rem);
+}
+body .hero-description {
+  max-width: 720px;
+}
+body .split-heading > p {
+  max-width: 460px;
+}
+body .button,
+body .quote-button {
+  letter-spacing: 0.65px;
+}
+body .camera-switch button,
+body .segmented button {
+  letter-spacing: 0.25px;
+}
+body .quote-field :is(input, select, textarea) {
+  letter-spacing: 0.45px;
+}
+body .quote-grand-total {
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+/* A darkening veil travels across the surface; the text always keeps contrast. */
+.button,
+.quote-button {
+  --button-surface: var(--brown-600);
+  --button-veil: #190e03;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 #ffffff2b,
+    0 5px 12px #190e0314,
+    0 1px 2px #190e031c;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.button::before,
+.quote-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--button-veil);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.48s cubic-bezier(0.22, 0.68, 0, 1);
+  pointer-events: none;
+}
+.button::after,
+.quote-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 #fffaf333,
+    inset 0 -1px 0 #190e0326;
+  pointer-events: none;
+}
+.button--primary,
+.button--primary:hover {
+  background: linear-gradient(165deg, #624229, var(--brown-600) 70%);
+  border-color: #b5947359;
+}
+.button--secondary,
+.button--secondary:hover,
+.quote-button-secondary {
+  --button-veil: #dcc7ac;
+  background: #fffaf338;
+  border-color: #795638;
+  box-shadow:
+    inset 0 1px 0 #fffaf350,
+    0 3px 8px #190e030b;
+}
+.button--light,
+.button--light:hover,
+.quote-button-primary {
+  --button-veil: #dfc8a9;
+  background: linear-gradient(165deg, #fffdf9, #f2e5d1);
+  border-color: #e6d4bb;
+}
+.quote-button-secondary:hover {
+  background: #fffaf338;
+}
+.quote-button-primary:hover {
+  background: linear-gradient(165deg, #fffdf9, #f2e5d1);
+}
+.hero-content--inverse .button--primary {
+  --button-veil: #dfc8a9;
+  background: linear-gradient(165deg, #fffdf9, #f2e5d1);
+  border-color: #e6d4bb;
+}
+.hero-content--inverse .button--secondary {
+  --button-veil: #523822;
+  background: #190e0322;
+  border-color: #fffaf3;
+}
+.button:focus-visible::before,
+.quote-button:focus-visible::before,
+.hero:has(#hero-copy .button--primary:is(:hover, :focus-visible))
+  .hero-content--inverse
+  .button--primary::before,
+.hero:has(#hero-copy .button--secondary:is(:hover, :focus-visible))
+  .hero-content--inverse
+  .button--secondary::before {
+  transform: scaleX(1);
+}
+@media (hover: hover) {
+  .button:not(:disabled):hover::before,
+  .quote-button:not(:disabled):hover::before {
+    transform: scaleX(1);
+  }
+  .button:not(:disabled):hover,
+  .quote-button:not(:disabled):hover,
+  .hero:has(#hero-copy .button--primary:hover)
+    .hero-content--inverse
+    .button--primary,
+  .hero:has(#hero-copy .button--secondary:hover)
+    .hero-content--inverse
+    .button--secondary {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 #ffffff2b,
+      0 10px 22px #190e0324,
+      0 2px 4px #190e0314;
+  }
+}
+.button:not(:disabled):active,
+.quote-button:not(:disabled):active {
+  transform: translateY(0);
+}
+.materials-section {
+  background: #130a03;
+}
+
+/* A full-height finish palette, with an independently animated background. */
+.finishes-section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  min-height: calc(100svh - var(--header-height));
+  display: grid;
+  align-items: center;
+  background: var(--cream);
+  padding-block: 80px;
+}
+.finishes-surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, #efe2cf 0%, #f5ecdf 65%, #e8d8bf 100%);
+  border-block: 1px solid #ddc6a766;
+  box-shadow: inset 0 24px 80px #fffaf33d;
+}
+.finishes-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+}
+.finishes-section .section-heading {
+  margin-bottom: 0;
+}
+.finishes-section .section-heading > p:last-child {
+  max-width: 640px;
+}
+.finish-palette {
+  margin: 56px auto 40px;
+  gap: clamp(24px, 4.2vw, 72px);
+}
+.finish-palette button {
+  flex: 0 1 184px;
+  min-width: 0;
+}
+.finish-chip {
+  width: 112px;
+  height: 112px;
+  background:
+    radial-gradient(ellipse at 35% 18%, #ffffff29, transparent 65%),
+    var(--finish);
+  border-color: #f2e7d7;
+  box-shadow:
+    0 0 0 1px #9f806259,
+    0 12px 24px #38200c1a,
+    inset 0 1px 1px #ffffff21;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.finish-palette button.is-active .finish-chip {
+  box-shadow:
+    0 0 0 2px var(--brown-500),
+    0 0 0 7px #fffaf340,
+    0 12px 24px #38200c22;
+}
+.finish-palette button:hover .finish-chip {
+  transform: translateY(-4px);
+}
+.finish-palette button:active .finish-chip {
+  transform: translateY(0);
+}
+.finish-palette strong {
+  letter-spacing: var(--heading-tracking);
+}
+.finish-palette small {
+  letter-spacing: 0.3px;
+}
+.finishes-section .section-note {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.finish-feedback {
+  max-width: 880px;
+  margin-inline: auto;
+  min-height: 48px;
+}
+.faq-list details[open] {
+  background: #f3ebdf77;
+  padding-inline: 16px;
+  margin-inline: -16px;
+}
+.faq-list summary {
+  letter-spacing: var(--body-tracking);
+  line-height: var(--body-leading);
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --heading-tracking: 0.85px;
+    --body-tracking: 0.75px;
+    --body-leading: 1.45;
+  }
+  .finishes-section {
+    padding-block: 64px;
+  }
+  .finish-palette {
+    gap: 16px;
+  }
+  .finish-chip {
+    width: 88px;
+    height: 88px;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    --heading-tracking: 0.35px;
+    --body-tracking: 0.25px;
+    --body-leading: 1.5;
+  }
+  body .hero-title {
+    font-size: clamp(2rem, 7.7vw, 2.625rem);
+  }
+  body .hero-description {
+    max-width: 440px;
+  }
+  body .button,
+  body .quote-button {
+    letter-spacing: 0.25px;
+  }
+  .finishes-section {
+    min-height: calc(100svh - var(--header-height));
+    padding-block: 56px;
+  }
+  .finish-palette {
+    max-width: 390px;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 32px auto;
+  }
+  .finish-palette button {
+    flex: 0 1 calc(33.333% - 16px);
+  }
+  .finish-chip {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 8px;
+  }
+  .finish-feedback {
+    min-height: 48px;
+  }
+  .finishes-section .section-note {
+    max-width: 360px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .quote-button,
+  .button::before,
+  .quote-button::before,
+  .finish-chip {
+    transition: none;
+  }
+  .button:not(:disabled):hover,
+  .quote-button:not(:disabled):hover,
+  .hero:has(#hero-copy .button--primary:hover)
+    .hero-content--inverse
+    .button--primary,
+  .hero:has(#hero-copy .button--secondary:hover)
+    .hero-content--inverse
+    .button--secondary,
+  .finish-palette button:hover .finish-chip {
+    transform: none;
+  }
+}

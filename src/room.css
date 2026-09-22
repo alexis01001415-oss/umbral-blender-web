@@ -374,19 +374,21 @@
 }
 .finish-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
   clear: both;
 }
 .swatches {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 44px);
   gap: 8px;
+  width: 100%;
 }
 .swatch {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
   border-radius: 50%;
   background: var(--swatch);
   border: 6px solid var(--brown-800);
@@ -396,12 +398,12 @@
   box-shadow: 0 0 0 2px #fffaf3;
 }
 .finish-row > span {
-  font-size: 0.875rem;
-  text-align: right;
+  font-size: 1rem;
+  text-align: left;
 }
 .finish-row small {
   display: block;
-  font-size: 0.5rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   color: #dac7ae;
   margin-top: 8px;
@@ -451,14 +453,6 @@
   .swatches {
     gap: 8px;
   }
-  .swatch {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-  }
-  .finish-row small {
-    font-size: 0.4375rem;
-  }
 }
 @media (max-width: 800px) {
   .experience {
@@ -496,14 +490,6 @@
   }
   .segmented button {
     min-height: 64px;
-  }
-  .finish-row small {
-    font-size: 0.5625rem;
-  }
-  .swatch {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
   }
   .room-quote-link {
     margin-top: 32px;

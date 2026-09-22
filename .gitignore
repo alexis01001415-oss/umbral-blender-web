@@ -13,4 +13,6 @@ blender/*.log
 blender/reference/
 blender/hero/*.png
 blender/hero/*.log
+blender/comparison/*.png
+blender/comparison/*.log
 output/qa/

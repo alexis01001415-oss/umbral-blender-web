@@ -637,13 +637,6 @@ summary {
   font-weight: 700;
   padding: 8px 12px;
 }
-.collection-image--duo img {
-  object-position: center 44%;
-  transform: scale(1.12);
-}
-.collection-image--duo:hover img {
-  transform: scale(1.15) !important;
-}
 .collection-title {
   display: flex;
   align-items: center;

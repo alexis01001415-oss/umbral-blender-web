@@ -1,0 +1,10 @@
+{
+  "width": 768,
+  "height": 864,
+  "dayFrame": 1,
+  "nightFrame": 2,
+  "sameCamera": true,
+  "sameFabricPose": true,
+  "fabricScaleZ": 1.0,
+  "sourceHeroUntouched": true
+}

@@ -6,6 +6,8 @@ Un estudio de persianas con un hero que responde al scroll, una habitación inte
 
 La segunda iteración aplica la paleta café `#523822 / #41250c / #2d1805 / #261405 / #190e03`, Brawler y Nunito Sans, espaciado basado en 8 px e iconos oficiales Google Material Symbols. Las fuentes y los recursos se sirven localmente.
 
+La tercera iteración añade botones con relieve y barrido al interactuar, tipografía con espaciado de 1.5 px en escritorio (títulos 120%, texto 140%), más luz y siete colores en el visor, comparador Dúo día/noche, ambientes vinculados al scroll, acabados a pantalla completa y 15 preguntas frecuentes. El generador y el diseño del PDF se conservan.
+
 ## Archivos principales
 
 - `blender/Umbral.blend`: proyecto editable, materiales empaquetados, colecciones, empties y animaciones.
@@ -18,10 +20,16 @@ La segunda iteración aplica la paleta café `#523822 / #41250c / #2d1805 / #261
 - `public/hero/`: renders WebP para escritorio y móvil, sprites del riel y coordenadas de registro.
 - `src/hero.js`: cierre con scroll y recorte sincronizado de texto oscuro/claro.
 - `src/room-controls.js`: carga diferida del visor original y controles de la habitación.
+- `src/room-palette.js`: siete acabados del visor, incluidos negro y arcilla.
+- `blender/comparison/Duo-Day-Night.blend`: proyecto independiente Eevee con dos estados de iluminación registrados.
+- `src/comparison.js`: comparación día/noche mediante arrastre o teclado y WebP responsivos.
+- `src/room-story.js`: ambientes por scroll, clic y teclado; vuelve a tabs estáticas cuando el contenido no cabe o se solicita movimiento reducido.
+- `src/section-motion.js` y `src/refinements.css`: entradas, barrido de acabados, botones y ritmo tipográfico responsivo, sin librería adicional.
 - `src/quote-pricing.js`: tarifas ilustrativas, validación, cálculos en centavos y PDF local.
 - `src/quote.js`: formulario de varias ventanas, resumen y descarga.
 - `docs/quote-guide.md`: configuración del cotizador y sus límites.
 - `docs/web-quality.md` y `docs/qa-report.md`: decisiones de accesibilidad, SEO, seguridad y mediciones de laboratorio.
+- `docs/qa-iteration-3.md`: mediciones y comprobaciones de esta iteración.
 - `docs/model-guide.md`: guía de edición en Blender.
 - `docs/pipeline-notes.md`: explicación del intercambio Blender → glTF → Three.js.
 
@@ -54,7 +62,11 @@ El clip `Blind_Close` dura 6 segundos: tiempo 0 = abierta, tiempo 6 = cerrada. E
 
 `Camera_Travel` es una animación separada de la cámara `CAMERA_Hero`. La vista Recorrido la reproduce lentamente de ida y vuelta. Espacio, Detalle y Restablecer permiten salir del recorrido. Las flechas del teclado giran la cámara; `+` / `-` acercan y alejan; `Inicio` la restablece. En pantallas pequeñas se explora con dos dedos y se puede desplazar la página con uno.
 
-La web ofrece tres atmósferas y tres colores de tejido. Las luces se recrean en Three.js: las luces Area y el World de Blender no se exportan en el núcleo de glTF. Es una adaptación para tiempo real; el render Cycles puede tener diferencias de rebotes, reflejos y sombras.
+La web ofrece tres atmósferas y siete colores de tejido. Día y Atardecer tienen más luz ambiente y de relleno para descubrir las superficies sin perder las sombras. Las luces se recrean en Three.js: las luces Area y el World de Blender no se exportan en el núcleo de glTF. Es una adaptación para tiempo real; el render Cycles puede tener diferencias de rebotes, reflejos y sombras.
+
+El comparador Dúo muestra la misma posición de persiana con luz de día y de noche: arrastre horizontal, flechas, Inicio y Fin. La sección de ambientes recorre Dormitorio → Sala → Home office al desplazarse en ambas direcciones; pulsar una pestaña sincroniza el recorrido. No captura la rueda ni impide salir de la sección. Si la pantalla es baja, el contenido no cabe o se solicita movimiento reducido, conserva las pestañas sin fijar el contenido.
+
+Los acabados entran con un barrido lateral y una secuencia breve de círculos. Al usar teclado se completan las entradas para que ningún control enfocado quede oculto. Con movimiento reducido todo aparece directamente. Los cinco acabados del catálogo se aplican también al visor; negro y arcilla son opciones adicionales del estudio 3D.
 
 El renderizado se detiene cuando el visor queda fuera de pantalla o la pestaña está oculta, y no dibuja continuamente una escena quieta. En móvil limita resolución y sombras. Respeta `prefers-reduced-motion` en transiciones de interfaz y cámara; el usuario inicia los movimientos deliberadamente.
 

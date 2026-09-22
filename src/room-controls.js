@@ -1,8 +1,30 @@
+import { ROOM_FINISHES, DEFAULT_ROOM_FINISH } from "./room-palette.js";
+
 /** The original room is loaded only after an explicit request to explore it. */
 export function initRoomControls() {
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => document.querySelectorAll(selector);
   const slider = $("#openness");
+  const palette = $(".swatches");
+  const currentFinish = palette.querySelector(".is-active")?.dataset.fabric;
+  let selectedFinish = Object.hasOwn(ROOM_FINISHES, currentFinish)
+    ? currentFinish
+    : DEFAULT_ROOM_FINISH;
+  palette.setAttribute("role", "group");
+  palette.replaceChildren(
+    ...Object.entries(ROOM_FINISHES).map(([key, finish]) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.fabric = key;
+      button.className = `swatch${key === selectedFinish ? " is-active" : ""}`;
+      button.style.setProperty("--swatch", finish.color);
+      button.setAttribute("aria-label", `Tejido ${finish.name}`);
+      button.setAttribute("aria-pressed", String(key === selectedFinish));
+      button.title = finish.name;
+      return button;
+    }),
+  );
+  $("#fabric-name").firstChild.textContent = ROOM_FINISHES[selectedFinish].name;
   let room,
     playing = false,
     paused = false,
@@ -50,29 +72,34 @@ export function initRoomControls() {
     $("#scene").tabIndex = enabled ? 0 : -1;
   }
   function showError(message) {
-    const returnFocus = $('#loading') === document.activeElement ||
-      $('#scene').contains(document.activeElement);
+    const returnFocus =
+      $("#loading") === document.activeElement ||
+      $("#scene").contains(document.activeElement);
     loaded = false;
     $("#loading").hidden = true;
     $("#scene-error").hidden = false;
     $("#error-detail").textContent = message;
     enableControls(false);
     $(".viewport").classList.remove("is-ready");
-    if (returnFocus && viewportVisible()) $('#retry').focus({ preventScroll: true });
+    if (returnFocus && viewportVisible())
+      $("#retry").focus({ preventScroll: true });
   }
   function viewportVisible() {
-    const bounds = $('.viewport').getBoundingClientRect();
-    return bounds.bottom > $('.site-header').offsetHeight && bounds.top < innerHeight;
+    const bounds = $(".viewport").getBoundingClientRect();
+    return (
+      bounds.bottom > $(".site-header").offsetHeight && bounds.top < innerHeight
+    );
   }
   async function loadRoom() {
     if (busy) return;
     busy = true;
-    const transferFocus = document.activeElement === $('#activate-room') ||
-      document.activeElement === $('#retry');
+    const transferFocus =
+      document.activeElement === $("#activate-room") ||
+      document.activeElement === $("#retry");
     $("#scene-error").hidden = true;
     $("#activate-room").hidden = true;
     $("#loading").hidden = false;
-    if (transferFocus) $('#loading').focus({ preventScroll: true });
+    if (transferFocus) $("#loading").focus({ preventScroll: true });
     $("#load-progress").textContent = "0%";
     $("#load-bar").style.width = "0%";
     enableControls(false);
@@ -91,14 +118,17 @@ export function initRoomControls() {
           setPlayState(false);
         },
         onCameraManual: () => choose($$("[data-view]"), null),
+        onViewChange: (view) =>
+          choose($$("[data-view]"), $(`[data-view="${view}"]`)),
         onError: showError,
       });
       loaded = true;
       playing = paused = false;
       room.setOpenness(Number(slider.value) / 100);
       room.setLighting($(".segmented .is-active").dataset.light);
-      room.setFabric($(".swatch.is-active").dataset.fabric);
-      const stillWaiting = document.activeElement === $('#loading') && viewportVisible();
+      room.setFabric(selectedFinish);
+      const stillWaiting =
+        document.activeElement === $("#loading") && viewportVisible();
       $("#loading").hidden = true;
       $(".viewport").classList.add("is-ready");
       enableControls(true);
@@ -146,14 +176,22 @@ export function initRoomControls() {
       room?.setLighting(button.dataset.light);
     }),
   );
-  $$("[data-fabric]").forEach((button) =>
-    button.addEventListener("click", () => {
-      choose($$("[data-fabric]"), button);
-      const names = { carbon: "Carbón", linen: "Lino", clay: "Arcilla" };
-      $("#fabric-name").firstChild.textContent = names[button.dataset.fabric];
-      room?.setFabric(button.dataset.fabric);
-    }),
-  );
+  function selectFabric(name) {
+    if (!Object.hasOwn(ROOM_FINISHES, name)) return false;
+    selectedFinish = name;
+    const button = palette.querySelector(`[data-fabric="${name}"]`);
+    choose(palette.querySelectorAll("[data-fabric]"), button);
+    $("#fabric-name").firstChild.textContent = ROOM_FINISHES[name].name;
+    room?.setFabric(name);
+    return true;
+  }
+  palette
+    .querySelectorAll("[data-fabric]")
+    .forEach((button) =>
+      button.addEventListener("click", () =>
+        selectFabric(button.dataset.fabric),
+      ),
+    );
   $$("[data-view]").forEach((button) =>
     button.addEventListener("click", () => {
       choose($$("[data-view]"), button);
@@ -170,4 +208,5 @@ export function initRoomControls() {
     if (!event.persisted) room?.dispose();
   });
   enableControls(false);
+  return { setFabric: selectFabric, getFabric: () => selectedFinish };
 }

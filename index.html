@@ -79,14 +79,10 @@
       </style></noscript
     >
   </head>
-  <body>
+  <body class="umbral-site">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
-      <a
-        class="brand"
-        href="#inicio"
-        >UMBRAL<span>LA LUZ SE HABITA</span></a
-      >
+      <a class="brand" href="#inicio">UMBRAL<span>LA LUZ SE HABITA</span></a>
       <nav class="desktop-nav" aria-label="Navegación principal">
         <a href="#coleccion">Persianas</a><a href="#materiales">Materiales</a
         ><a href="#experiencia">Tu espacio</a>
@@ -241,7 +237,13 @@
               ><span>Explorar en 3D</span
               ><small>Abre, cierra y cambia la atmósfera</small>
             </button>
-            <div class="loading" id="loading" role="status" tabindex="-1" hidden>
+            <div
+              class="loading"
+              id="loading"
+              role="status"
+              tabindex="-1"
+              hidden
+            >
               <span class="loading-mark">U</span>
               <p>Preparando tu espacio <span id="load-progress">0%</span></p>
               <div class="load-track"><i id="load-bar"></i></div>
@@ -535,15 +537,20 @@
             </button>
           </article>
           <article class="collection-card">
-            <div class="collection-image collection-image--duo">
+            <div class="collection-image duo-comparison" data-duo-comparison>
               <img
-                src="./hero/window-closed-mobile.webp"
-                width="1080"
-                height="1440"
-                alt="Detalle frontal de un tejido oscuro con bandas horizontales"
+                src="./comparison/duo-day-768.webp"
+                srcset="
+                  ./comparison/duo-day-480.webp 480w,
+                  ./comparison/duo-day-768.webp 768w
+                "
+                sizes="(max-width:540px) calc(100vw - 48px), 30vw"
+                width="768"
+                height="864"
+                alt="Persiana dúo de bandas café y translúcidas frente a una ventana de día"
                 loading="lazy"
                 decoding="async"
-              /><span class="image-tag">PARA CAMBIAR DE RITMO</span>
+              /><span class="image-tag">UN TEJIDO. DOS MOMENTOS.</span>
             </div>
             <div class="collection-title">
               <h3>Dúo</h3>
@@ -704,43 +711,47 @@
         id="acabados"
         aria-labelledby="finishes-title"
       >
-        <div class="section-heading centered">
-          <p class="eyebrow">05 / UN TONO QUE TE REPRESENTE</p>
-          <h2 id="finishes-title">La calidez tiene matices.</h2>
-          <p>
-            Del lino luminoso al espresso profundo. Una paleta pensada para
-            quedarse.
+        <div class="finishes-surface" aria-hidden="true"></div>
+        <div class="finishes-inner">
+          <div class="section-heading centered">
+            <p class="eyebrow">05 / UN TONO QUE TE REPRESENTE</p>
+            <h2 id="finishes-title">La calidez tiene matices.</h2>
+            <p>
+              Del lino luminoso al espresso profundo. Una paleta pensada para
+              quedarse.
+            </p>
+          </div>
+          <div
+            class="finish-palette"
+            role="group"
+            aria-label="Selecciona un acabado"
+          >
+            <button data-finish="lino" aria-pressed="false">
+              <span class="finish-chip" style="--finish: #d6c7af"></span
+              ><strong>Lino</strong><small>Suave y luminoso</small></button
+            ><button data-finish="arena" aria-pressed="false">
+              <span class="finish-chip" style="--finish: #ac8b65"></span
+              ><strong>Arena</strong><small>Natural y acogedor</small></button
+            ><button data-finish="cafe" aria-pressed="true" class="is-active">
+              <span class="finish-chip" style="--finish: #523822"></span
+              ><strong>Café</strong><small>Cálido y envolvente</small></button
+            ><button data-finish="espresso" aria-pressed="false">
+              <span class="finish-chip" style="--finish: #261405"></span
+              ><strong>Espresso</strong
+              ><small>Intenso y elegante</small></button
+            ><button data-finish="carbon" aria-pressed="false">
+              <span class="finish-chip" style="--finish: #22211f"></span
+              ><strong>Carbón</strong><small>Sobrio y atemporal</small>
+            </button>
+          </div>
+          <p class="finish-feedback" id="finish-feedback" role="status">
+            Café: una base cálida que acompaña a la madera.
+          </p>
+          <p class="section-note centered">
+            Los colores en pantalla son orientativos. Confirma una muestra
+            física antes de elegir.
           </p>
         </div>
-        <div
-          class="finish-palette"
-          role="group"
-          aria-label="Selecciona un acabado"
-        >
-          <button data-finish="lino" aria-pressed="false">
-            <span class="finish-chip" style="--finish: #d6c7af"></span
-            ><strong>Lino</strong><small>Suave y luminoso</small></button
-          ><button data-finish="arena" aria-pressed="false">
-            <span class="finish-chip" style="--finish: #ac8b65"></span
-            ><strong>Arena</strong><small>Natural y acogedor</small></button
-          ><button data-finish="cafe" aria-pressed="true" class="is-active">
-            <span class="finish-chip" style="--finish: #523822"></span
-            ><strong>Café</strong><small>Cálido y envolvente</small></button
-          ><button data-finish="espresso" aria-pressed="false">
-            <span class="finish-chip" style="--finish: #261405"></span
-            ><strong>Espresso</strong><small>Intenso y elegante</small></button
-          ><button data-finish="carbon" aria-pressed="false">
-            <span class="finish-chip" style="--finish: #22211f"></span
-            ><strong>Carbón</strong><small>Sobrio y atemporal</small>
-          </button>
-        </div>
-        <p class="finish-feedback" id="finish-feedback" role="status">
-          Café: una base cálida que acompaña a la madera.
-        </p>
-        <p class="section-note centered">
-          Los colores en pantalla son orientativos. Confirma una muestra física
-          antes de elegir.
-        </p>
       </section>
 
       <section class="process-section section" aria-labelledby="process-title">
@@ -913,6 +924,20 @@
         <div class="faq-list">
           <details>
             <summary>
+              ¿Cómo elijo el tejido para mi espacio?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Empieza por lo que necesitas: reducir la luz para descansar,
+              suavizarla mientras trabajas o regularla durante el día. Explora
+              los ambientes y compara blackout, screen y dúo antes de cotizar.
+            </p>
+          </details>
+          <details>
+            <summary>
               ¿Qué diferencia hay entre blackout, screen y dúo?<span
                 class="material-symbols-outlined"
                 aria-hidden="true"
@@ -1011,6 +1036,106 @@
               datos que escribes no se envían a un servidor ni se guardan al
               cerrar la página. El alojamiento recibe las solicitudes técnicas
               necesarias para mostrar el sitio.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿Qué medidas necesito para empezar?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Anota ancho y alto en centímetros para cada persiana. Por ejemplo,
+              escribe 120 para un ancho de 1.20 metros. Estas medidas sirven
+              para una primera estimación; confirma la medida de fabricación
+              según el sistema y el montaje elegidos.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿La persiana va dentro o fuera del marco?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Ambas opciones pueden funcionar. Revisa la profundidad disponible,
+              las manijas y la apertura de la ventana. El montaje fuera del
+              marco también requiere definir cuánto cubrir a cada lado antes de
+              confirmar las medidas.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿El motor está incluido en el precio?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              El mecanismo inicial es de cadena. Si eliges motor en el
+              cotizador, su importe se suma por pieza y aparece en el desglose.
+              Puedes combinar mecanismos distintos para diferentes ventanas.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿Cambiar de color modifica la estimación?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              En este prototipo, los acabados no tienen un cargo adicional. Sí
+              cambian el importe las medidas, el tejido, la cantidad, el
+              mecanismo y la instalación seleccionada.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿El color se verá igual que en mi pantalla?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Puede variar con la pantalla y la luz de tu habitación. Usa el
+              visor para explorar combinaciones y confirma el tono con una
+              muestra física junto a tus paredes y muebles.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿Puedo hacer la cotización desde mi celular?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Sí. Configura cada ventana y toca «Descargar mi cotización». Según
+              tu navegador, el archivo se descargará o se abrirá para que puedas
+              guardarlo y compartirlo.
+            </p>
+          </details>
+          <details>
+            <summary>
+              ¿Puedo cambiar mi cotización después de descargarla?<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >expand_more</span
+              >
+            </summary>
+            <p>
+              Sí. Mientras la página siga abierta, ajusta las opciones y
+              descarga un nuevo PDF. El archivo anterior conserva sus datos; no
+              se actualiza automáticamente.
             </p>
           </details>
         </div>

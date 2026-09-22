@@ -7,6 +7,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { getRoomFinish } from "./room-palette.js";
 
 const clamp = THREE.MathUtils.clamp;
 const smooth = (t) => t * t * (3 - 2 * t);
@@ -15,22 +16,28 @@ const LIGHTS = {
     sky: "#c9e1e7",
     sun: "#fff3dc",
     sunPower: 3.3,
-    ambient: 0.52,
-    window: 5.8,
+    ambient: 0.86,
+    environment: 0.56,
+    fill: 1.05,
+    fillDaylight: 1.7,
+    window: 6.4,
     lamp: 17,
     exterior: 1,
-    exposure: 1.05,
+    exposure: 1.08,
     background: "#718581",
   },
   golden: {
     sky: "#cad7cf",
     sun: "#ffe0ae",
     sunPower: 2.65,
-    ambient: 0.4,
-    window: 4.8,
+    ambient: 0.7,
+    environment: 0.44,
+    fill: 0.92,
+    fillDaylight: 1.45,
+    window: 5.6,
     lamp: 24,
     exterior: 0.75,
-    exposure: 1.02,
+    exposure: 1.08,
     background: "#758279",
   },
   night: {
@@ -38,6 +45,9 @@ const LIGHTS = {
     sun: "#a9c9ff",
     sunPower: 0.18,
     ambient: 0.16,
+    environment: 0.096,
+    fill: 0.36,
+    fillDaylight: 0.12,
     window: 0.4,
     lamp: 32,
     exterior: 0.025,
@@ -45,7 +55,6 @@ const LIGHTS = {
     background: "#1e2a3d",
   },
 };
-const FABRICS = { carbon: "#474844", linen: "#c9bea7", clay: "#977357" };
 
 export async function createRoom(container, events = {}) {
   const reducedMotion = window.matchMedia(
@@ -281,6 +290,9 @@ export async function createRoom(container, events = {}) {
     for (const key of [
       "sunPower",
       "ambient",
+      "environment",
+      "fill",
+      "fillDaylight",
       "window",
       "lamp",
       "exterior",
@@ -299,14 +311,18 @@ export async function createRoom(container, events = {}) {
     scene.background.lerp(new THREE.Color(desiredLight.background), t);
     sun.intensity = currentLight.sunPower;
     hemi.intensity = currentLight.ambient * (0.45 + openness * 0.55);
-    scene.environmentIntensity = currentLight.ambient * (0.3 + openness * 0.3);
+    // Broad indirect light reveals the wood and upholstery without increasing
+    // the directional key or the lamp's physically decaying highlights.
+    // The night environment matches the original values at every openness.
+    scene.environmentIntensity =
+      currentLight.environment * (0.5 + openness * 0.5);
     windowLight.intensity = currentLight.window * (0.04 + openness * 0.96);
     lamp.intensity = currentLight.lamp;
     outdoorMaterials.forEach((material) => {
       material.emissiveIntensity = currentLight.exterior;
       material.color.setScalar(currentLight.exterior);
     });
-    fill.intensity = lighting === "night" ? 0.45 : 0.75 + openness * 0.45;
+    fill.intensity = currentLight.fill + openness * currentLight.fillDaylight;
     renderer.toneMappingExposure = currentLight.exposure;
     if (changed) dirty = Math.max(dirty, 2);
   }
@@ -373,13 +389,14 @@ export async function createRoom(container, events = {}) {
   }
 
   function setFabric(name) {
+    const finish = getRoomFinish(name);
     fabrics.forEach((material) => {
       // The authored albedo is already charcoal. Lighter colorways use a solid
       // albedo with the same woven normal map, rather than multiply it by black.
-      material.map = name === "carbon" ? material.userData.fabricMap : null;
-      material.color.set(
-        name === "carbon" ? "#ffffff" : FABRICS[name] || FABRICS.carbon,
-      );
+      const useAuthoredAlbedo =
+        finish.authoredAlbedo && material.userData.fabricMap;
+      material.map = useAuthoredAlbedo ? material.userData.fabricMap : null;
+      material.color.set(useAuthoredAlbedo ? "#ffffff" : finish.color);
       material.needsUpdate = true;
     });
     setOpenness(openness);
@@ -455,6 +472,7 @@ export async function createRoom(container, events = {}) {
     cameraTransition = null;
     if (event.key === "Home") {
       setView("room");
+      events.onViewChange?.("room");
       return;
     }
     const offset = camera.position.clone().sub(controls.target);
