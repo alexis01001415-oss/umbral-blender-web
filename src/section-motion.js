@@ -1,6 +1,11 @@
-/** Entry motion uses transforms only. No letters are split or read twice. */
+import { initTextReveal } from "./text-reveal.js";
+
+/** Heading reveals and the independent finishes-surface/swatches entrance. */
 export function initSectionMotion() {
+  const textReveal = initTextReveal();
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const controller = new AbortController();
+  const { signal } = controller;
   const running = new Set();
   const play = (element, keyframes, options) => {
     if (reduced.matches || !element) return;
@@ -33,19 +38,6 @@ export function initSectionMotion() {
               { transform: "translateX(0)" },
             ],
             { duration: 900, easing: "cubic-bezier(.2,.7,.15,1)" },
-          );
-          play(
-            section.querySelector(".section-heading"),
-            [
-              { opacity: 0, transform: "translateY(24px)" },
-              { opacity: 1, transform: "translateY(0)" },
-            ],
-            {
-              duration: 680,
-              delay: 140,
-              fill: "backwards",
-              easing: "cubic-bezier(.2,.7,.15,1)",
-            },
           );
           section
             .querySelectorAll(".finish-palette button")
@@ -81,33 +73,29 @@ export function initSectionMotion() {
             });
           continue;
         }
-        play(
-          entry.target,
-          [
-            { opacity: 0, transform: "translateY(24px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          { duration: 680, easing: "cubic-bezier(.2,.7,.15,1)" },
-        );
       }
     },
     { threshold: 0.22 },
   );
   document
-    .querySelectorAll(
-      ".section:not(.finishes-section):not(.rooms-section) h2, .finishes-section",
-    )
+    .querySelectorAll(".finishes-section")
     .forEach((element) => observer.observe(element));
   document
     .querySelector(".finishes-section")
-    .addEventListener("focusin", finishMotion);
-  reduced.addEventListener("change", (event) => {
-    if (event.matches) finishMotion();
-  });
+    ?.addEventListener("focusin", finishMotion, { signal });
+  reduced.addEventListener(
+    "change",
+    (event) => {
+      if (event.matches) finishMotion();
+    },
+    { signal },
+  );
   return {
     destroy() {
       observer.disconnect();
+      controller.abort();
       finishMotion();
+      textReveal.destroy();
     },
   };
 }

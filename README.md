@@ -8,6 +8,8 @@ La segunda iteración aplica la paleta café `#523822 / #41250c / #2d1805 / #261
 
 La tercera iteración añade botones con relieve y barrido al interactuar, tipografía con espaciado de 1.5 px en escritorio (títulos 120%, texto 140%), más luz y siete colores en el visor, comparador Dúo día/noche, ambientes vinculados al scroll, acabados a pantalla completa y 15 preguntas frecuentes. El generador y el diseño del PDF se conservan.
 
+La cuarta iteración incorpora aves en el paisaje del hero, escritura progresiva en los encabezados y un footer con luz cálida y formulario de contacto de demostración. El formulario valida los campos y muestra una vista previa editable; no envía mensajes. El resto de la habitación, los renders y el PDF se mantienen.
+
 ## Archivos principales
 
 - `blender/Umbral.blend`: proyecto editable, materiales empaquetados, colecciones, empties y animaciones.
@@ -25,11 +27,15 @@ La tercera iteración añade botones con relieve y barrido al interactuar, tipog
 - `src/comparison.js`: comparación día/noche mediante arrastre o teclado y WebP responsivos.
 - `src/room-story.js`: ambientes por scroll, clic y teclado; vuelve a tabs estáticas cuando el contenido no cabe o se solicita movimiento reducido.
 - `src/section-motion.js` y `src/refinements.css`: entradas, barrido de acabados, botones y ritmo tipográfico responsivo, sin librería adicional.
+- `src/hero-life.js` y `src/hero-life.css`: vuelo ambiental en canvas, recortado por la abertura real de la ventana y el riel de la persiana.
+- `src/text-reveal.js` y `src/text-reveal.css`: escritura por carácter de 1.4–2.2 segundos con texto original y dimensiones preservadas.
+- `src/contact.js` y `src/contact.css`: formulario de demostración y footer a una altura mínima de pantalla, adaptable al contenido.
 - `src/quote-pricing.js`: tarifas ilustrativas, validación, cálculos en centavos y PDF local.
 - `src/quote.js`: formulario de varias ventanas, resumen y descarga.
 - `docs/quote-guide.md`: configuración del cotizador y sus límites.
 - `docs/web-quality.md` y `docs/qa-report.md`: decisiones de accesibilidad, SEO, seguridad y mediciones de laboratorio.
-- `docs/qa-iteration-3.md`: mediciones y comprobaciones de esta iteración.
+- `docs/qa-iteration-3.md`: mediciones y comprobaciones de la tercera iteración.
+- `docs/qa-iteration-4.md`: mediciones y comprobaciones de aves, texto y contacto.
 - `docs/model-guide.md`: guía de edición en Blender.
 - `docs/pipeline-notes.md`: explicación del intercambio Blender → glTF → Three.js.
 
@@ -67,6 +73,12 @@ La web ofrece tres atmósferas y siete colores de tejido. Día y Atardecer tiene
 El comparador Dúo muestra la misma posición de persiana con luz de día y de noche: arrastre horizontal, flechas, Inicio y Fin. La sección de ambientes recorre Dormitorio → Sala → Home office al desplazarse en ambas direcciones; pulsar una pestaña sincroniza el recorrido. No captura la rueda ni impide salir de la sección. Si la pantalla es baja, el contenido no cabe o se solicita movimiento reducido, conserva las pestañas sin fijar el contenido.
 
 Los acabados entran con un barrido lateral y una secuencia breve de círculos. Al usar teclado se completan las entradas para que ningún control enfocado quede oculto. Con movimiento reducido todo aparece directamente. Los cinco acabados del catálogo se aplican también al visor; negro y arcilla son opciones adicionales del estudio 3D.
+
+Las aves cruzan el cielo en grupos pequeños, alternando aleteo y planeo. El canvas queda detrás de la cortina y recortado por las coordenadas del render. Su control permite pausar y reanudar; solo esta preferencia se recuerda en `sessionStorage` durante la sesión de la pestaña. El dibujo se limita a 30 fps y se detiene fuera de vista, con la pestaña oculta, la cortina cerrada o la preferencia de movimiento reducido.
+
+Los encabezados H2 estáticos se revelan una sola vez, carácter a carácter. Los nodos originales conservan saltos, énfasis, altura y lectura accesible; una capa decorativa temporal reproduce sus posiciones. Selección de texto, foco dentro de la sección, redimensionado o movimiento reducido terminan la entrada. El H1 del hero conserva sus dos tonos sincronizados con la persiana.
+
+El footer tiene una lámpara decorativa con un cono de luz suave. Su altura mínima es una pantalla y crece en móvil o cuando se abre la vista previa para evitar recortes. El formulario pide nombre, correo e idea, con espacio opcional. Los campos permanecen desactivados hasta conectar la lógica de demostración; el resumen usa `textContent`, no HTML. No hay endpoint, envío, `mailto` ni almacenamiento de los campos. La CSP mantiene `form-action 'none'`.
 
 El renderizado se detiene cuando el visor queda fuera de pantalla o la pestaña está oculta, y no dibuja continuamente una escena quieta. En móvil limita resolución y sombras. Respeta `prefers-reduced-motion` en transiciones de interfaz y cámara; el usuario inicia los movimientos deliberadamente.
 

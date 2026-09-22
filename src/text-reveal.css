@@ -1,0 +1,39 @@
+/* The real heading remains in normal flow and in the accessibility tree.
+   Only an active, measured reveal gets a decorative visual layer. */
+.text-reveal-active {
+  position: relative;
+  color: transparent !important;
+}
+
+.text-reveal-active > :not(.text-reveal-overlay) {
+  opacity: 0 !important;
+}
+
+.text-reveal-overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.text-reveal-glyph {
+  position: absolute;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  white-space: pre;
+  text-align: left;
+  text-indent: 0;
+  transform-origin: 50% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* JS also finishes active reveals when this preference changes. */
+  .text-reveal-glyph {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

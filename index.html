@@ -115,7 +115,8 @@
         <a href="#coleccion">Persianas</a><a href="#materiales">Materiales</a
         ><a href="#experiencia">Explora tu espacio</a
         ><a href="#medidas">Cómo medir</a
-        ><a href="#cotizador">Cotiza tu espacio</a>
+        ><a href="#cotizador">Cotiza tu espacio</a
+        ><a href="#contacto">Contacto</a>
       </nav>
     </header>
     <main id="contenido">
@@ -1156,8 +1157,168 @@
         >
       </section>
     </main>
-    <footer class="site-footer">
-      <div class="footer-top">
+    <footer
+      class="site-footer contact-footer"
+      id="contacto"
+      aria-labelledby="contact-title"
+    >
+      <div class="footer-light" aria-hidden="true">
+        <div class="footer-light__beam"></div>
+        <div class="footer-light__pool"></div>
+        <div class="footer-light__fixture"></div>
+      </div>
+      <div class="footer-contact-layout">
+        <div class="footer-invitation">
+          <p class="eyebrow">11 / TODA BUENA IDEA EMPIEZA HABLANDO</p>
+          <h2 id="contact-title">
+            Hagamos espacio<br />para <em>tu idea.</em>
+          </h2>
+          <p class="footer-intro">
+            Una ventana, una habitación o un nuevo comienzo. Cuéntanos qué te
+            gustaría cambiar.
+          </p>
+          <div class="footer-signature" aria-hidden="true">
+            <span></span>La luz se habita.
+          </div>
+        </div>
+        <div class="contact-panel">
+          <div class="contact-panel-heading">
+            <p class="eyebrow">CUÉNTANOS DE TU ESPACIO</p>
+            <span class="contact-demo-label">Demostración</span>
+          </div>
+          <form
+            id="contact-form"
+            aria-labelledby="contact-title"
+            aria-describedby="contact-demo-note"
+          >
+            <fieldset data-contact-fields disabled>
+              <legend class="sr-only">Tu mensaje de contacto</legend>
+              <div class="contact-fields">
+                <div class="contact-field">
+                  <label for="contact-name">Tu nombre</label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                    minlength="2"
+                    maxlength="80"
+                    placeholder="¿Cómo te llamas?"
+                  />
+                </div>
+                <div class="contact-field">
+                  <label for="contact-email">Correo electrónico</label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    required
+                    maxlength="120"
+                    placeholder="nombre@ejemplo.com"
+                  />
+                </div>
+                <div class="contact-field contact-field--wide">
+                  <label for="contact-space"
+                    >¿Qué espacio tienes en mente?
+                    <span>(opcional)</span></label
+                  >
+                  <select id="contact-space" name="space">
+                    <option value="">Selecciona un espacio</option>
+                    <option value="sala">Sala</option>
+                    <option value="dormitorio">Dormitorio</option>
+                    <option value="home-office">Home office</option>
+                    <option value="otro">Otro espacio</option>
+                  </select>
+                </div>
+                <div class="contact-field contact-field--wide">
+                  <label for="contact-message">Tu idea</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows="4"
+                    required
+                    minlength="10"
+                    maxlength="1200"
+                    placeholder="Más luz en la sala, un dormitorio tranquilo…"
+                    aria-describedby="contact-message-hint"
+                  ></textarea>
+                  <small id="contact-message-hint"
+                    >De 10 a 1,200 caracteres.</small
+                  >
+                </div>
+              </div>
+              <button
+                class="button button--light contact-submit"
+                type="submit"
+                id="contact-submit"
+              >
+                Previsualizar mensaje<span
+                  class="material-symbols-outlined"
+                  aria-hidden="true"
+                  >visibility</span
+                >
+              </button>
+            </fieldset>
+            <p class="contact-demo-note" id="contact-demo-note">
+              Formulario de demostración. No envía mensajes ni guarda tus datos.
+            </p>
+            <noscript
+              ><p class="contact-demo-note">
+                La vista previa necesita JavaScript. Este formulario está
+                desactivado y no envía información.
+              </p></noscript
+            >
+          </form>
+          <p
+            id="contact-status"
+            class="contact-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <div
+            id="contact-preview"
+            class="contact-preview"
+            hidden
+            tabindex="-1"
+            aria-labelledby="contact-preview-title"
+          >
+            <p class="eyebrow">SOLO UNA VISTA PREVIA</p>
+            <h3 id="contact-preview-title">Tu mensaje, antes de enviarlo.</h3>
+            <dl>
+              <div>
+                <dt>Nombre</dt>
+                <dd data-contact-preview="name"></dd>
+              </div>
+              <div>
+                <dt>Correo</dt>
+                <dd data-contact-preview="email"></dd>
+              </div>
+              <div>
+                <dt>Espacio</dt>
+                <dd data-contact-preview="space"></dd>
+              </div>
+              <div class="contact-preview-message">
+                <dt>Tu idea</dt>
+                <dd data-contact-preview="message"></dd>
+              </div>
+            </dl>
+            <p>
+              Vista previa de demostración. No se ha enviado ningún mensaje.
+            </p>
+            <button class="text-button" type="button" id="contact-edit">
+              Seguir editando<span
+                class="material-symbols-outlined"
+                aria-hidden="true"
+                >edit</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-top footer-navigation">
         <a class="brand" href="#inicio">UMBRAL<span>LA LUZ SE HABITA</span></a>
         <p>
           Persianas, texturas y calma.<br />Una manera más tuya de estar en
@@ -1195,6 +1356,11 @@
         El cotizador funciona en tu navegador. Los nombres, notas y medidas se
         usan para generar el PDF que tú descargas. No se envían, no se añaden a
         una base de datos y no se conservan al cerrar la página.
+      </p>
+      <p>
+        El formulario de contacto es una demostración. Solo muestra una vista
+        previa en esta página: no envía mensajes ni guarda el nombre, correo o
+        texto que escribas.
       </p>
       <p>
         No añadimos cookies de publicidad ni herramientas de analítica. GitHub

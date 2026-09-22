@@ -6,7 +6,9 @@ import { initQuote } from "./quote.js";
 import { initComparison } from "./comparison.js";
 import { initRoomStory } from "./room-story.js";
 import { initSectionMotion } from "./section-motion.js";
+import { initContactDemo } from "./contact.js";
 import "./refinements.css";
+import "./contact.css";
 
 initHero();
 const roomControls = initRoomControls();
@@ -14,6 +16,7 @@ const quote = initQuote(document.querySelector("#quote-app"));
 initComparison(document.querySelector("[data-duo-comparison]"));
 initRoomStory();
 initSectionMotion();
+initContactDemo();
 
 const menuButton = document.querySelector("#menu-toggle");
 const menu = document.querySelector("#mobile-menu");

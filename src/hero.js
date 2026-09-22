@@ -1,7 +1,10 @@
+import { initHeroLife } from "./hero-life.js";
+
 /** The Eevee endpoints share a camera. One moving mask reveals the fabric and
  * the light copy at exactly the same physical edge; no video seeking or WebGL. */
 export async function initHero() {
   const hero = document.querySelector(".hero");
+  if (!hero) return;
   const pin = hero.querySelector(".hero-pin");
   const copy = hero.querySelector("#hero-copy");
   const inverse = copy.cloneNode(true);
@@ -37,6 +40,7 @@ export async function initHero() {
     return;
   }
 
+  const ambience = initHeroLife({ hero, pin, motionQuery: reduce });
   let scheduled = false;
   function update() {
     scheduled = false;
@@ -47,7 +51,9 @@ export async function initHero() {
       height = pin.clientHeight;
     const scale = Math.max(width / frame.width, height / frame.height);
     const renderedHeight = frame.height * scale;
+    const renderedWidth = frame.width * scale;
     const offset = (height - renderedHeight) / 2;
+    const offsetX = (width - renderedWidth) / 2;
     const headerHeight = document.querySelector(".site-header").offsetHeight;
     const distance = Math.max(1, hero.offsetHeight - pin.offsetHeight);
     const progress = staticHero
@@ -73,6 +79,18 @@ export async function initHero() {
     hero.style.setProperty("--rail-height", `${frame.rail.height * scale}px`);
     hero.style.setProperty("--progress", progress.toFixed(4));
     hero.classList.toggle("has-progress", progress > 0.001 && progress < 0.999);
+    ambience?.setViewport({
+      width,
+      height,
+      aperture: {
+        left: offsetX + renderedWidth * frame.apertureTopLeft[0],
+        top: offset + renderedHeight * frame.apertureTopLeft[1],
+        right: offsetX + renderedWidth * frame.apertureBottomRight[0],
+        bottom: offset + renderedHeight * frame.apertureBottomRight[1],
+      },
+      edge: railY,
+      railHeight: frame.rail.height * scale,
+    });
   }
   const requestUpdate = () => {
     if (!scheduled) {
