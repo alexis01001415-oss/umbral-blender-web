@@ -1,162 +1,155 @@
 import "./style.css";
-import { createRoom } from "./room.js";
+import "./room.css";
+import { initHero } from "./hero.js";
+import { initRoomControls } from "./room-controls.js";
+import { initQuote } from "./quote.js";
 
-const $ = (selector) => document.querySelector(selector);
-const $$ = (selector) => document.querySelectorAll(selector);
-const slider = $("#openness");
-let room;
-let playing = false;
-let paused = false;
-let endpoint = 0;
-let loaded = false;
+initHero();
+initRoomControls();
+const quote = initQuote(document.querySelector("#quote-app"));
 
-function setPlayState(active) {
-  playing = active;
-  $("#play-label").textContent = active
-    ? "Pausar movimiento"
-    : paused
-      ? endpoint === 1
-        ? "Continuar apertura"
-        : "Continuar cierre"
-      : Number(slider.value) < 1
-        ? "Abrir persiana"
-        : "Cerrar persiana";
-  $("#play-icon").innerHTML = active
-    ? '<path d="M7 4v12M13 4v12"/>'
-    : '<path d="m7 4 9 6-9 6Z"/>';
-  $("#motion-status").textContent = active
-    ? endpoint === 0
-      ? "La habitación se vuelve íntima."
-      : "La luz vuelve a entrar."
-    : "Tú decides cuánta luz entra.";
+const menuButton = document.querySelector("#menu-toggle");
+const menu = document.querySelector("#mobile-menu");
+function setMenu(open) {
+  menu.hidden = !open;
+  menuButton.setAttribute("aria-expanded", String(open));
+  menuButton.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+  menuButton.firstElementChild.textContent = open ? "close" : "menu";
 }
+menuButton.addEventListener("click", () => setMenu(menu.hidden));
+menu.addEventListener("click", (event) => {
+  if (event.target.closest("a")) setMenu(false);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !menu.hidden) {
+    setMenu(false);
+    menuButton.focus();
+  }
+});
+document.addEventListener("click", (event) => {
+  if (!menu.hidden && !event.target.closest(".site-header")) setMenu(false);
+});
+matchMedia("(min-width:801px)").addEventListener("change", (event) => {
+  if (event.matches) setMenu(false);
+});
 
-function updateOpenness(value) {
-  const percent = Math.round(value * 100);
-  slider.value = percent;
-  slider.style.setProperty("--value", `${percent}%`);
-  slider.setAttribute("aria-valuetext", `${percent} por ciento abierta`);
-  $("#openness-value").innerHTML = `${percent}<span>%</span>`;
-  if (!playing) setPlayState(false);
-}
-
-function choose(buttons, active) {
-  buttons.forEach((button) => {
-    const selected = button === active;
-    button.classList.toggle("is-active", selected);
-    button.setAttribute("aria-pressed", String(selected));
-  });
-}
-
-async function init() {
-  $("#scene-error").hidden = true;
-  $("#loading").classList.remove("is-done");
-  $("#loading").removeAttribute("aria-hidden");
-  $("#play").disabled = true;
-  $("#load-progress").textContent = "0%";
-  room?.dispose();
-  try {
-    room = await createRoom($("#scene"), {
-      onProgress: (percent) => {
-        $("#load-progress").textContent = `${percent}%`;
-        $("#load-bar").style.width = `${percent}%`;
-      },
-      onOpenness: updateOpenness,
-      onComplete: () => {
-        paused = false;
-        setPlayState(false);
-      },
-      onCameraManual: () => {
-        $$(".camera-switch button").forEach((button) => {
-          button.classList.remove("is-active");
-          button.setAttribute("aria-pressed", "false");
+document.querySelectorAll("[data-quote-fabric]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (quote.setFirstWindow({ fabric: button.dataset.quoteFabric })) {
+      document
+        .querySelector("#cotizador")
+        .scrollIntoView({
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "instant"
+            : "smooth",
         });
-      },
-      onError: (message) => showError(message),
+      document
+        .querySelector('#quote-app [data-field="fabric"]')
+        .focus({ preventScroll: true });
+    }
+  });
+});
+
+const finishes = {
+  lino: ["ivory", "Lino: un tono luminoso para un ambiente suave."],
+  arena: ["sand", "Arena: una calidez natural que combina con todo."],
+  cafe: ["coffee", "Café: una base cálida que acompaña a la madera."],
+  espresso: ["espresso", "Espresso: profundidad y carácter en tu ventana."],
+  carbon: ["charcoal", "Carbón: un acento sereno de líneas definidas."],
+};
+const finishButtons = document.querySelectorAll("[data-finish]");
+finishButtons.forEach((button) =>
+  button.addEventListener("click", () => {
+    const [color, description] = finishes[button.dataset.finish];
+    quote.setFirstWindow({ color });
+    finishButtons.forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+      item.setAttribute("aria-pressed", String(item === button));
     });
-    loaded = true;
-    room.setOpenness(Number(slider.value) / 100);
-    room.setLighting($(".segmented .is-active").dataset.light);
-    room.setFabric($(".swatch.is-active").dataset.fabric);
-    $("#loading").classList.add("is-done");
-    $("#loading").setAttribute("aria-hidden", "true");
-    $(".viewport").classList.add("is-ready");
-    $("#play").disabled = false;
-    $("#reverse").disabled = false;
-  } catch (error) {
-    console.error("Room initialization failed:", error);
-    showError(
-      "La vista necesita WebGL 2 y una conexión para cargar la escena. Prueba a recargar o a usar otro navegador.",
-    );
-  }
-}
+    document.querySelector("#finish-feedback").textContent =
+      `${description} Aplicado al primer espacio del cotizador.`;
+  }),
+);
 
-function showError(message) {
-  loaded = false;
-  $("#loading").classList.add("is-done");
-  $("#loading").setAttribute("aria-hidden", "true");
-  $("#scene-error").hidden = false;
-  $("#error-detail").textContent = message;
-  $("#play").disabled = true;
-  $("#reverse").disabled = true;
-  $(".viewport").classList.remove("is-ready");
+const rooms = {
+  bedroom: {
+    title: "Hazle espacio al descanso.",
+    text: "Una tela opaca ayuda a bajar la intensidad del exterior. Acompáñala con tonos cálidos para un ambiente que invita a parar.",
+    icon: "bed",
+    recommendation: "Explora blackout o dúo",
+    image: "closed",
+    alt: "Ambiente de descanso con la persiana cerrada y luz cálida",
+  },
+  living: {
+    title: "Deja que el día se quede.",
+    text: "Suaviza la luz sin perder la sensación de amplitud. Las texturas neutras unen tu ventana con el resto de la sala.",
+    icon: "weekend",
+    recommendation: "Explora screen o translúcido",
+    image: "open",
+    alt: "Sala con persiana abierta y luz natural junto al sillón",
+  },
+  office: {
+    title: "Encuentra tu punto de enfoque.",
+    text: "Gradúa la luz que llega a tu escritorio y reduce reflejos según la orientación de tu ventana. Tú decides cuándo desconectar.",
+    icon: "workspaces",
+    recommendation: "Explora screen o dúo",
+    image: "room",
+    alt: "Rincón tranquilo con luz filtrada para inspirar un espacio de trabajo",
+  },
+};
+const tabs = [...document.querySelectorAll("[data-room]")];
+const panel = document.querySelector("#room-panel");
+function chooseRoom(tab) {
+  const data = rooms[tab.dataset.room];
+  tabs.forEach((item) => {
+    item.setAttribute("aria-selected", String(item === tab));
+    item.tabIndex = item === tab ? 0 : -1;
+  });
+  panel.setAttribute("aria-labelledby", tab.id);
+  panel.querySelector("h3").textContent = data.title;
+  panel.querySelector("p").textContent = data.text;
+  const recommendation = panel.querySelector(".recommendation");
+  recommendation.querySelector(".material-symbols-outlined").textContent =
+    data.icon;
+  recommendation.lastChild.textContent = data.recommendation;
+  const photo = document.querySelector("#room-inspiration");
+  const imageBase = `${import.meta.env.BASE_URL}rooms/${data.image}`;
+  photo.srcset = `${imageBase}-480.webp 480w, ${imageBase}-960.webp 960w`;
+  photo.src = `${imageBase}-960.webp`;
+  photo.alt = data.alt;
 }
+tabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => chooseRoom(tab));
+  tab.addEventListener("keydown", (event) => {
+    const positions = {
+      ArrowRight: (index + 1) % tabs.length,
+      ArrowLeft: (index + tabs.length - 1) % tabs.length,
+      Home: 0,
+      End: tabs.length - 1,
+    };
+    if (!(event.key in positions)) return;
+    event.preventDefault();
+    const next = tabs[positions[event.key]];
+    chooseRoom(next);
+    next.focus();
+  });
+});
 
-slider.addEventListener("input", () => {
-  const value = Number(slider.value) / 100;
-  room?.stop();
-  paused = false;
-  setPlayState(false);
-  updateOpenness(value);
-  room?.setOpenness(value);
+const privacy = document.querySelector("#privacy-dialog");
+document
+  .querySelector("#privacy-open")
+  .addEventListener("click", () => privacy.showModal());
+document
+  .querySelector("#privacy-close")
+  .addEventListener("click", () => privacy.close());
+privacy.addEventListener("click", (event) => {
+  if (event.target !== privacy) return;
+  const bounds = privacy.getBoundingClientRect();
+  if (
+    event.clientX < bounds.left ||
+    event.clientX > bounds.right ||
+    event.clientY < bounds.top ||
+    event.clientY > bounds.bottom
+  )
+    privacy.close();
 });
-$("#play").addEventListener("click", () => {
-  if (!loaded) return;
-  if (playing) {
-    room.stop();
-    paused = true;
-    setPlayState(false);
-    return;
-  }
-  if (!paused) endpoint = Number(slider.value) < 1 ? 1 : 0;
-  paused = false;
-  setPlayState(true);
-  room.animateTo(endpoint);
-});
-$("#reverse").addEventListener("click", () => {
-  if (!loaded) return;
-  endpoint = endpoint === 0 ? 1 : 0;
-  paused = false;
-  setPlayState(true);
-  room.animateTo(endpoint);
-});
-$$("[data-light]").forEach((button) =>
-  button.addEventListener("click", () => {
-    choose($$("[data-light]"), button);
-    room?.setLighting(button.dataset.light);
-  }),
-);
-$$("[data-fabric]").forEach((button) =>
-  button.addEventListener("click", () => {
-    choose($$("[data-fabric]"), button);
-    const names = { carbon: "Carbón", linen: "Lino", clay: "Arcilla" };
-    $("#fabric-name").innerHTML =
-      `${names[button.dataset.fabric]}<small>BLACKOUT · TEJIDO MATE</small>`;
-    room?.setFabric(button.dataset.fabric);
-  }),
-);
-$$("[data-view]").forEach((button) =>
-  button.addEventListener("click", () => {
-    choose($$("[data-view]"), button);
-    room?.setView(button.dataset.view);
-  }),
-);
-$("#reset-camera").addEventListener("click", () => {
-  choose($$("[data-view]"), $('[data-view="room"]'));
-  room?.setView("room");
-});
-$("#retry").addEventListener("click", init);
-window.addEventListener("pagehide", (event) => {
-  if (!event.persisted) room?.dispose();
-});
-init();

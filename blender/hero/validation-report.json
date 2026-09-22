@@ -1,0 +1,60 @@
+{
+  "blend": "Hero-Umbral.blend",
+  "sha256": "77d871de36e7201680e10dc27d355398ac4ea174dbc548d6f522bfa7d7cf8c25",
+  "engine": "BLENDER_EEVEE",
+  "fps": 24,
+  "durationSeconds": 6,
+  "groupNames": [
+    "01_Architecture",
+    "02_Blind_Assembly",
+    "03_Exterior",
+    "04_Studio_Lighting",
+    "05_Cameras",
+    "06_Architectural_Details"
+  ],
+  "objects": 40,
+  "materials": 9,
+  "allFileImagesPacked": true,
+  "linkedLibraries": 0,
+  "opaqueFabric": true,
+  "staticCameras": true,
+  "fixedWeaveSpace": true,
+  "frames": [
+    {
+      "frame": 1,
+      "fabricScaleZ": 0.023,
+      "topZ": 3.635,
+      "bottomZ": 3.5591,
+      "railZ": 3.5591
+    },
+    {
+      "frame": 37,
+      "fabricScaleZ": 0.26725,
+      "topZ": 3.635,
+      "bottomZ": 2.753075,
+      "railZ": 2.753075
+    },
+    {
+      "frame": 73,
+      "fabricScaleZ": 0.5115,
+      "topZ": 3.635,
+      "bottomZ": 1.94705,
+      "railZ": 1.94705
+    },
+    {
+      "frame": 109,
+      "fabricScaleZ": 0.75575,
+      "topZ": 3.635,
+      "bottomZ": 1.141025,
+      "railZ": 1.141025
+    },
+    {
+      "frame": 145,
+      "fabricScaleZ": 1.0,
+      "topZ": 3.635,
+      "bottomZ": 0.335,
+      "railZ": 0.335
+    }
+  ],
+  "projectionMatchesWebMetadata": true
+}

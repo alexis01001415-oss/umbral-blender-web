@@ -1,0 +1,66 @@
+{
+  "desktop": {
+    "width": 1920,
+    "height": 1200,
+    "apertureTopLeft": [
+      0.0875,
+      0.10875
+    ],
+    "apertureBottomRight": [
+      0.9125,
+      0.93375
+    ],
+    "openRailCenter": 0.127725,
+    "closedRailCenter": 0.93375,
+    "open": {
+      "file": "window-open.webp",
+      "bytes": 28280,
+      "quality": 86
+    },
+    "closed": {
+      "file": "window-closed.webp",
+      "bytes": 22908,
+      "quality": 86
+    },
+    "rail": {
+      "file": "hero-bottom-rail.webp",
+      "width": 1920,
+      "height": 32,
+      "cropTop": 621,
+      "centerOffsetPx": 16.0,
+      "bytes": 2198
+    }
+  },
+  "mobile": {
+    "width": 1080,
+    "height": 1440,
+    "apertureTopLeft": [
+      0.027805,
+      0.118293
+    ],
+    "apertureBottomRight": [
+      0.972195,
+      0.923171
+    ],
+    "openRailCenter": 0.136805,
+    "closedRailCenter": 0.923171,
+    "open": {
+      "file": "window-open-mobile.webp",
+      "bytes": 20376,
+      "quality": 86
+    },
+    "closed": {
+      "file": "window-closed-mobile.webp",
+      "bytes": 15034,
+      "quality": 86
+    },
+    "rail": {
+      "file": "hero-bottom-rail-mobile.webp",
+      "width": 1080,
+      "height": 36,
+      "cropTop": 745,
+      "centerOffsetPx": 18.0,
+      "bytes": 1630
+    }
+  }
+}

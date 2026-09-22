@@ -11,3 +11,6 @@ playwright-report/
 blender/renders/
 blender/*.log
 blender/reference/
+blender/hero/*.png
+blender/hero/*.log
+output/qa/
